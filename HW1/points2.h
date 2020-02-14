@@ -17,17 +17,11 @@
 #include <sstream>
 
 namespace teaching_project {
-// Place comments that provide a brief explanation of the class,
-// and its sample usage.
 template<typename Object>
 class Points2 {
  public:
-  // Default "big five" -- you have to alter them for your assignment.
-  // That means that you will remove the "= default" statement.
-  //  and you will provide an implementation.
-
   // Zero-parameter constructor. 
-  Points2() : size_(0), sequence_(new std::array<Object, 2>()) {}
+  Points2() : size_(0), sequence_(new std::array<Object, 2>[2]) {}
 
   // Copy-constructor.
   /**
@@ -36,31 +30,24 @@ class Points2 {
  *       object to it.
   */
   Points2(const Points2 &rhs) 
-   : sequence_(new std::array<Object, 2>(*rhs.sequence_)), 
+   : sequence_(new std::array<Object, 2>[rhs.size_*2]), 
      size_(rhs.size_) {
-    for (size_t i = 0; i < size_; ++i) {
-      sequence_[i][0] = rhs.sequence_[i][0]; 
-      sequence_[i][1] = rhs.sequence_[i][1]; 
+    // std::copy(rhs.sequence_, rhs.sequence_ + rhs.size_ , sequence_);
+    for(size_t i = 0; i < rhs.size_; ++i){
+      sequence_[i][0] = rhs.sequence_[i][0];
+      sequence_[i][1] = rhs.sequence_[i][1];
     }
   }
   
   // Copy-assignment. If you have already written
   // the copy-constructor and the move-constructor
-  // you can just use:
-  // {
-  // Points2 copy = rhs; 
-  // std::swap(*this, copy);
-  // return *this;
-  // }
   /**
  * @param rhs another object of type Points2D to be copied from
  * @post assigns all attributes of rhs to an another existing Points2D object
   */
   Points2& operator=(const Points2 &rhs) {
-    if (this != &rhs) {
-      Points2 copy = rhs;
-      std::swap(*this, copy);
-    } 
+    Points2 copy = rhs;
+    std::swap(*this, copy);
     return *this;
   }
 
@@ -75,7 +62,6 @@ class Points2 {
   }
 
   // Move-assignment.
-  // Just use std::swap() for all variables.
   /**
  * @param rhs another object of type Points2D that will be losing it's data
  * @post all attributes of rhs will be transfered to an existing Points2D object
@@ -84,14 +70,6 @@ class Points2 {
     if (this != &rhs) {
       std::swap(sequence_, rhs.sequence_);
       std::swap(size_, rhs.size_);
-      
-      // delete[] sequence_; // deletes any existing information 
-      
-      // sequence_ = rhs.sequence_;
-      // size_ = rhs.size_;
-      
-      // rhs.sequence_ = nullptr;
-      // rhs.size_ = 0;
     }
     return *this;
   }
@@ -100,7 +78,11 @@ class Points2 {
  * @post deletes the sequence_ array that was allocated on the heap
   */
   ~Points2() {
-    delete[] sequence_;
+    if (sequence_ != nullptr) {
+      delete[] sequence_;
+      sequence_ = nullptr;
+      size_ = 0;
+    }
   }
 
   // End of big-five.
@@ -112,10 +94,9 @@ class Points2 {
  *       item array that was passed in as a parameter.
   */
   Points2(const std::array<Object, 2>& item) 
-    : size_(item.size()/2), sequence_(new std::array<Object, 2>()) {
-      for (size_t i = 0; i < item.size(); ++i) {
-        sequence_[0][i] = item[i]; 
-      }
+    : size_(item.size()), sequence_(new std::array<Object, 2>[2]) {
+      sequence_[0][0] = item[0]; 
+      sequence_[0][1] = item[1]; 
     }
 
   // Read a chain from standard input.
@@ -140,9 +121,7 @@ class Points2 {
     Object token;
     for (size_t i = 0;input_stream >> token; ++i) {
       // fills in sequence_ as the user gives in coordinates
-      sequence_[i][0] = token;
-      input_stream >> token;
-      sequence_[i][1] = token;
+      sequence_[0][i] = token;
     }
   }
   /**
@@ -159,9 +138,10 @@ class Points2 {
  * @return the point at location
   */
   const std::array<Object, 2>& operator[](size_t location) const { 
-    if (location >= size_) abort();
+    if (location >= size_ || location < 0) abort();
     
-    return *(sequence_+location);
+    // return *(sequence_+location);
+    return sequence_[location];
   }
 
   /**
@@ -171,13 +151,26 @@ class Points2 {
  *         append the result with the remaining part of the larger sequence
   */
   friend Points2 operator+(const Points2 &c1, const Points2 &c2) {
-    Points2<Object> sum;
-    sum.size_ = std::max(c1.size_, c2.size_);
-    for(size_t i = 0; i < sum.size_; ++i) {
-      sum.sequence_[i][0] = c1.sequence_[i][0] + c2.sequence_[i][0];
-      sum.sequence_[i][1] = c1.sequence_[i][1] + c2.sequence_[i][1];
+    
+    if (c1.size_ > c2.size_) {
+      Points2 sum{c1};
+      std::cout << "sum: " << sum << "\n";
+      sum.size_ = c1.size_;
+      for (size_t i = 0; i < c2.size_; ++i) {
+        sum.sequence_[i][0] += c2.sequence_[i][0];
+        sum.sequence_[i][1] += c2.sequence_[i][1];
+      }
+      return sum;
+    } else {
+      Points2 sum{c2};
+      std::cout << "sum: " << sum << "\n";
+      sum.size_ = c2.size_;
+      for (size_t i = 0; i < c1.size_; ++i) {
+        sum.sequence_[i][0] += c1.sequence_[i][0];
+        sum.sequence_[i][1] += c1.sequence_[i][1];
+      }
+      return sum;
     }
-    return sum;
   }
 
   // Overloading the << operator.
@@ -189,7 +182,7 @@ class Points2 {
   */
   friend std::ostream &operator<<(std::ostream &out, const Points2 &some_points2) {
     if (some_points2.size_ == 0) out << "()";
-    for (size_t i = 0; i < some_points2.size(); ++i) {
+    for (size_t i = 0; i < some_points2.size_; ++i) {
       out << "(" << some_points2.sequence_[i][0] << ", " << some_points2.sequence_[i][1] << ") ";
     }
     out << "\n";
