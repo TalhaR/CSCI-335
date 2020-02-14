@@ -1,10 +1,10 @@
 /**
  * @author Talha Rahman
+ * Date: 2/10/20
  * Class: CSCI-335
  * Program Description: Class that contains a sequence of 2D points 
  *  points are stored in a 2D matrix. Can access and modify points 
  *  in sequence. ALong with adding with other sequences of type Points2D.
- * 
  */
 
 #ifndef CSCI335_HOMEWORK1_POINTS2_H_
@@ -32,7 +32,6 @@ class Points2 {
   Points2(const Points2 &rhs) 
    : sequence_(new std::array<Object, 2>[rhs.size_*2]), 
      size_(rhs.size_) {
-    // std::copy(rhs.sequence_, rhs.sequence_ + rhs.size_ , sequence_);
     for(size_t i = 0; i < rhs.size_; ++i){
       sequence_[i][0] = rhs.sequence_[i][0];
       sequence_[i][1] = rhs.sequence_[i][1];
@@ -151,26 +150,24 @@ class Points2 {
  *         append the result with the remaining part of the larger sequence
   */
   friend Points2 operator+(const Points2 &c1, const Points2 &c2) {
+    const Points2* largerSquencePtr;
+    const Points2* smallerSquencePtr;
     
     if (c1.size_ > c2.size_) {
-      Points2 sum{c1};
-      std::cout << "sum: " << sum << "\n";
-      sum.size_ = c1.size_;
-      for (size_t i = 0; i < c2.size_; ++i) {
-        sum.sequence_[i][0] += c2.sequence_[i][0];
-        sum.sequence_[i][1] += c2.sequence_[i][1];
-      }
-      return sum;
+      largerSquencePtr = &c1;
+      smallerSquencePtr = &c2;
     } else {
-      Points2 sum{c2};
-      std::cout << "sum: " << sum << "\n";
-      sum.size_ = c2.size_;
-      for (size_t i = 0; i < c1.size_; ++i) {
-        sum.sequence_[i][0] += c1.sequence_[i][0];
-        sum.sequence_[i][1] += c1.sequence_[i][1];
-      }
-      return sum;
+      largerSquencePtr = &c2;
+      smallerSquencePtr = &c1;
     }
+    
+    Points2 sum{*largerSquencePtr};
+    
+    for (size_t i = 0; i < smallerSquencePtr->size_; ++i) {
+      sum.sequence_[i][0] += smallerSquencePtr->sequence_[i][0];
+      sum.sequence_[i][1] += smallerSquencePtr->sequence_[i][1];
+    }
+    return sum;
   }
 
   // Overloading the << operator.

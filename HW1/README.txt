@@ -27,7 +27,8 @@ Homework Question 1:
   that will print all permutations of the given string that was passed
   in to the original function as a parameter
 
-The only challenging part was creating the logic for permuting the string
+  The only challenging part was creating the logic for permuting the string.
+  Gave me flash backs of 150, where I struggled quite a bit.
 
 Homework Question 2: 
   File: points2.h
@@ -64,5 +65,18 @@ Homework Question 2:
     I did not know what to do when the two sequences were of different lengths
     then I checked the discussion board on BlackBoard and there was an explanation for 
     what to do, which was helpful.  
+    
+    
+  Instructions to run:
+    Permute.h:
+      import as a header file into a separate c++ file with main function
+      call the permute(std::string str) method to print all permutations of 
+      string str.
+      
+    Points2.h:
+      if makefile is present, call make all
+      then do "test_points2 < test_input_file.txt" 
+      the contents of test_input_file.txt may be changed to test different sequences
+      
     
     
