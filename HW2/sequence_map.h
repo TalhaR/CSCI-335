@@ -33,6 +33,7 @@ public:
      */
     SequenceMap(const string& a_rec_seq, const string& an_enz_acro) 
         : recognition_sequence_(a_rec_seq), enzyme_acronyms_{an_enz_acro} {}
+        
     /**
      * @param rhs object of type SequenceMap that will be compared 
      * @post compares this->recognition_sequence_ to rhs.recognition_sequence_

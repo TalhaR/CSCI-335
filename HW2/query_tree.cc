@@ -17,8 +17,39 @@ template <typename TreeType>
 void QueryTree(const string &db_filename, TreeType &a_tree) {
   // Code for running Part2(a)
   // You can use public functions of TreeType. For example:
-  a_tree.insert(10);
-  a_tree.printTree();
+  // a_tree.insert(10);
+  // a_tree.printTree();
+  
+  std::ifstream infile(db_filename);
+  
+  if (infile.fail()) {
+    std::cerr << "Can not open file\n";
+    exit(1);
+  } 
+  
+  string db_line;
+  
+  // using this for loop to skip over first 10 lines
+  // because the actual data starts on line 11
+  for(short s = 0; s < 10; s++) {
+    getline(infile, db_line);
+  }
+  
+  while (getline(infile, db_line)) {
+    string an_enz_acro;
+    
+    
+    
+    for(string::iterator itr = db_line.begin(); itr != db_line.end(); itr++) {
+      
+    }
+    
+    
+  }
+  
+  
+  
+  infile.close();
 }
 
 }  // namespace
