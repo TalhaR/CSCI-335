@@ -1,4 +1,9 @@
-// @author Talha Rahman
+/**
+ *  @author Talha Rahman
+ *  Class: CSCI-335 
+ *  Program Description: reads input from a file 
+ */ 
+
 // Main file for Part2(a) of Homework 2.
 
 #include "avl_tree.h"
@@ -89,8 +94,8 @@ main(int argc, char **argv) {
   
   vector<string> inputs;
   string input1, input2, input3;
-  cout << "enter 3 recognition sequences: ";
-  cin >> input1 >> input2 >> input3;
+  std::cout << "enter 3 recognition sequences: ";
+  std::cin >> input1 >> input2 >> input3;
   
   inputs.push_back(input1); 
   inputs.push_back(input2); 
@@ -100,9 +105,9 @@ main(int argc, char **argv) {
     SequenceMap input_sequence_map(inputs[i], {});
     
     if(a_tree.contains(input_sequence_map)){ 
-      cout << a_tree.find(inputs[i]) << "\n";
+      std::cout << a_tree.find(inputs[i]) << "\n";
     } else { 
-      cout << "Not Found\n"; 
+      std::cout << "Not Found\n"; 
     }
   }
   std::cout << "\n";
