@@ -1,8 +1,10 @@
 // <Your name>
 // Main file for Part2(c) of Homework 2.
 
-#include "avl_tree_modified.h"
+#include "avl_tree.h"
 // You will have to add #include "sequence_map.h"
+#include "sequence_map.h"
+#include "avl_tree_p2c.h"
 
 #include <iostream>
 #include <string>

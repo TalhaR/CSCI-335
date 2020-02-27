@@ -3,6 +3,8 @@
 
 #include "avl_tree.h"
 // You will have to add #include "sequence_map.h"
+#include "sequence_map.h"
+#include "avl_tree_p2b.h"
 
 #include <iostream>
 #include <string>

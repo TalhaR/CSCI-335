@@ -53,6 +53,7 @@ public:
         for(auto& str : someSequenceMap.enzyme_acronyms_) {
             std::cout << str << " ";
         }
+        
         return out;
     }
     

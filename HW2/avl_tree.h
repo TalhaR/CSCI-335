@@ -145,6 +145,15 @@ class AvlTree
     {
         remove( x, root );
     }
+    
+    const Comparable& find(const Comparable& c) {
+        return find(c, root);
+    }
+    
+    const Comparable& find(const string& str) {
+        Comparable c{str, {}};
+        return find(c, root);
+    }
 
   private:
     struct AvlNode
@@ -162,6 +171,20 @@ class AvlTree
     };
 
     AvlNode *root;
+    
+    
+    const Comparable& find(const Comparable& c, AvlNode* t) const {
+        if (t == nullptr) {
+            cout << "Not Found\n";
+            return c;
+        } else if (c < t->element) {
+            return find(c, t->left);
+        } else if (t->element < c) {
+            return find(c, t->right);
+        } else {
+            return t->element;
+        }
+    }
 
 
     /**
@@ -178,6 +201,8 @@ class AvlTree
             insert( x, t->left );
         else if( t->element < x )
             insert( x, t->right );
+        else 
+            t->element.Merge(x);
         
         balance( t );
     }
@@ -196,6 +221,8 @@ class AvlTree
             insert( std::move( x ), t->left );
         else if( t->element < x )
             insert( std::move( x ), t->right );
+        else 
+            t->element.Merge(x);
         
         balance( t );
     }
