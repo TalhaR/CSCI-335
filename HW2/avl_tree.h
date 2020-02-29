@@ -89,8 +89,9 @@ class AvlTree
     /**
      * Returns true if x is found in the tree.
      */
-    bool contains( const Comparable & x ) const
+    bool contains( const Comparable & x ) 
     {
+        recursive_calls = 0;
         return contains( x, root );
     }
 
@@ -146,14 +147,41 @@ class AvlTree
         remove( x, root );
     }
     
+    /**
+     * @param c an object of type Comparable
+     * @return a const-reference to node containing c
+     */
     const Comparable& find(const Comparable& c) {
         return find(c, root);
     }
     
+    /**
+     * @param str a string object 
+     * @return a const-reference to node containing c
+     */
     const Comparable& find(const string& str) {
         Comparable c{str, {}};
         return find(c, root);
     }
+    
+    /**
+     * @return the number of nodes in the Tree
+     */
+    int getNumberOfNodes() const {
+        return getNumberOfNodesHelper(root);
+    }
+    
+    /**
+     * @return the internal path length of the tree
+     */
+    int getInternalPathLength() const {
+        return getInternalPathLengthHelper(root);
+    }
+    
+    size_t getRecursiveCalls() const {
+        return recursive_calls;
+    }
+    
 
   private:
     struct AvlNode
@@ -172,6 +200,9 @@ class AvlTree
 
     AvlNode *root;
     
+    // keeps track of number of recursive calls in functions
+    size_t recursive_calls = 0;
+    
     /**
      * @param c - Object of Sequence map
      * @param t - current node 
@@ -186,6 +217,32 @@ class AvlTree
             return find(c, t->right);
         } else {
             return t->element;
+        }
+    }
+    
+    /**
+     * @param t - current node 
+     * @return recursively adding 1 based on the number of nodes
+     */
+    int getNumberOfNodesHelper(AvlNode* t) const {
+        if (t == nullptr) {
+            return 0;
+        } else {
+            return 1 + getNumberOfNodesHelper(t->left) + getNumberOfNodesHelper(t->right);
+        }
+    }
+    
+    /**
+     * @param t - current node 
+     * @return recursively adds up the nodes to get the internal path length
+     */
+    int getInternalPathLengthHelper(AvlNode* t) const {
+        if (t == nullptr) {
+            return 0; 
+        } else {
+            return getInternalPathLengthHelper(t->left) +
+                getInternalPathLengthHelper(t->right) +
+                getNumberOfNodesHelper(t) - 1;
         }
     }
 
@@ -238,6 +295,8 @@ class AvlTree
      */
     void remove( const Comparable & x, AvlNode * & t )
     {
+        recursive_calls++;
+        
         if( t == nullptr )
             return;   // Item not found; do nothing
         
@@ -313,8 +372,10 @@ class AvlTree
      * x is item to search for.
      * t is the node that roots the tree.
      */
-    bool contains( const Comparable & x, AvlNode *t ) const
+    bool contains( const Comparable & x, AvlNode *t )
     {
+        recursive_calls++;
+        
         if( t == nullptr )
             return false;
         else if( x < t->element )
