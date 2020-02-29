@@ -172,10 +172,13 @@ class AvlTree
 
     AvlNode *root;
     
-    
+    /**
+     * @param c - Object of Sequence map
+     * @param t - current node 
+     * @return a const-reference to node containing x
+     */
     const Comparable& find(const Comparable& c, AvlNode* t) const {
         if (t == nullptr) {
-            cout << "Not Found\n";
             return c;
         } else if (c < t->element) {
             return find(c, t->left);

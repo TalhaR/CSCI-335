@@ -27,7 +27,6 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   // You can use public functions of TreeType. For example:
   // a_tree.insert(10);
   // a_tree.printTree();
-  
   std::ifstream infile(db_filename);
   
   if (infile.fail()) {
@@ -52,7 +51,7 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
     // reads the first part of the db_line which is an
     // enzyme acronym and stores it in the an_enz_acro variable
     getline(db_line_stream, an_enz_acro, '/'); 
-    string a_reco_seq = "";
+    string a_reco_seq;
     
     while(getline(db_line_stream, a_reco_seq, '/')) {
       // this if means we've reached the "//" at the end
@@ -72,10 +71,20 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
       // pushes back each sequence read into a string vector for recognition sequences
       recognition_sequences.push_back(a_reco_seq);
     }
-    
   }
   
   infile.close();
+  
+  string input;
+  while(getline(cin, input)) {
+    SequenceMap seqMap(input, {});
+    
+    if (a_tree.contains(seqMap)) {
+      cout << a_tree.find(seqMap) << "\n";
+    } else {
+      cout << "Not Found\n";
+    }
+  }
 }
 
 }  // namespace
@@ -92,25 +101,7 @@ main(int argc, char **argv) {
   AvlTree<SequenceMap> a_tree;
   QueryTree(db_filename, a_tree);
   
-  vector<string> inputs;
-  string input1, input2, input3;
-  std::cout << "enter 3 recognition sequences: ";
-  std::cin >> input1 >> input2 >> input3;
-  
-  inputs.push_back(input1); 
-  inputs.push_back(input2); 
-  inputs.push_back(input3);
-  
-  for (int i = 0; i < 3; ++i){
-    SequenceMap input_sequence_map(inputs[i], {});
-    
-    if(a_tree.contains(input_sequence_map)){ 
-      std::cout << a_tree.find(inputs[i]) << "\n";
-    } else { 
-      std::cout << "Not Found\n"; 
-    }
-  }
-  std::cout << "\n";
+
   
   return 0;
 }
