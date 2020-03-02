@@ -26,7 +26,7 @@ template <typename Comparable>
 class AvlTree
 {
   public:
-    AvlTree( ) : root{ nullptr }
+    AvlTree( ) : root{ nullptr }, recursive_calls{0}
       { }
     
     AvlTree( const AvlTree & rhs ) : root{ nullptr }
@@ -144,6 +144,7 @@ class AvlTree
      */
     void remove( const Comparable & x )
     {
+        recursive_calls = 0;
         remove( x, root );
     }
     
@@ -178,6 +179,9 @@ class AvlTree
         return getInternalPathLengthHelper(root);
     }
     
+    /**
+     * @return the number of recursive calls
+     */
     size_t getRecursiveCalls() const {
         return recursive_calls;
     }
@@ -201,7 +205,7 @@ class AvlTree
     AvlNode *root;
     
     // keeps track of number of recursive calls in functions
-    size_t recursive_calls = 0;
+    size_t recursive_calls;
     
     /**
      * @param c - Object of Sequence map
@@ -297,9 +301,9 @@ class AvlTree
     {
         recursive_calls++;
         
-        if( t == nullptr )
+        if( t == nullptr ) 
             return;   // Item not found; do nothing
-        
+            
         if( x < t->element )
             remove( x, t->left );
         else if( t->element < x )
