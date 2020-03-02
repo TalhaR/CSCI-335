@@ -32,7 +32,7 @@ public:
      *       and enzyme acronym equivalent to parameters 
      */
     SequenceMap(const string& a_rec_seq, const string& an_enz_acro) 
-        : recognition_sequence_(a_rec_seq), enzyme_acronyms_{an_enz_acro} {}
+        : recognition_sequence_{a_rec_seq}, enzyme_acronyms_{an_enz_acro} {}
         
     /**
      * @param rhs object of type SequenceMap that will be compared 
@@ -69,7 +69,7 @@ public:
         }
         
         // if other_sequence.enzyme_acronyms_ is empty then return
-        if (other_sequence.enzyme_acronyms_.size() == 0) return;
+        if (other_sequence.enzyme_acronyms_.empty()) return;
         
         for (auto& str : other_sequence.enzyme_acronyms_) {
             enzyme_acronyms_.push_back(str);

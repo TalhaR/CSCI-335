@@ -33,7 +33,7 @@ main(int argc, char **argv) {
   const string seq_filename(argv[2]);
   cout << "Input file is " << db_filename << ", and sequences file is " << seq_filename << endl;
   // Note that you will replace AvlTree<int> with AvlTree<SequenceMap>
-  AvlTree<int> a_tree;
+  AvlTree<SequenceMap> a_tree;
   TestTree(db_filename, seq_filename, a_tree);
 
   return 0;

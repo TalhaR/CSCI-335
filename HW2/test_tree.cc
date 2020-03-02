@@ -70,18 +70,19 @@ void TestTree(const string &db_filename, const string &seq_filename, TreeType &a
   
   infile.close();
   
+  int total_nodes = a_tree.getNumberOfNodes();
   
-  cout << "2: " << a_tree.getNumberOfNodes() << "\n";
+  cout << "2: " << total_nodes << "\n";
   cout << "3a: " << (float)a_tree.getInternalPathLength() 
-    / a_tree.getNumberOfNodes() << "\n";
+    / total_nodes << "\n";
   
   cout << "3b: " << ((float)a_tree.getInternalPathLength() 
-    / a_tree.getNumberOfNodes()) /  log2(a_tree.getNumberOfNodes())<< "\n";
+    / total_nodes) /  log2(total_nodes) << "\n";
   
   // Reading from Sequences File
   ifstream seq_file{seq_filename};
   string input_sequence;
-  double successful_queries = 0, recursive_search_calls = 0;
+  float successful_queries{0}, recursive_search_calls{0};
   
   if (seq_file.fail()) {
     std::cerr << "Sequence File could not open\n";
@@ -101,16 +102,36 @@ void TestTree(const string &db_filename, const string &seq_filename, TreeType &a
   
   cout << "4b: " << recursive_search_calls / successful_queries << "\n";
   
-  cout << "5a: " << "\n";
+  // opens Sequence file again
+  ifstream seq_file2{seq_filename};
+  int remove_calls{0}, recursive_remove_calls{0};
   
-  cout << "5b: " << "\n";
+  while(getline(seq_file2, input_sequence)) {
+    SequenceMap seq_map{input_sequence, {}};
+    
+    
+    // if(a_tree.contains(seq_map)) {
+      remove_calls++;
+      a_tree.remove(seq_map);
+      recursive_remove_calls += a_tree.getRecursiveCalls();
+    // }
+    getline(seq_file2, input_sequence); // skips every other line
+  }
+  
+  seq_file2.close();
   
   
   
+  cout << "5a: " << total_nodes - a_tree.getNumberOfNodes() << "\n";
   
-  cout << "6a: " << "\n";
-  cout << "6b: " << "\n";
-  cout << "6c: " << "\n";
+  cout << "5b: " << (float)--recursive_remove_calls / ++remove_calls << "\n";
+  
+  total_nodes = a_tree.getNumberOfNodes();
+  
+  cout << "6a: " << total_nodes << "\n";
+  cout << "6b: " << (float)a_tree.getInternalPathLength() / total_nodes << "\n";
+  cout << "6c: " << ((float)a_tree.getInternalPathLength() 
+    / total_nodes) /  log2(total_nodes) << "\n";
 
 }
 
