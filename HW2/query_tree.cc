@@ -1,16 +1,17 @@
 /**
  *  @author Talha Rahman
  *  Class: CSCI-335 
- *  Program Description: reads input from a file 
+ *  Program Description: reads input from a rebasefile that contains
+ *  a enzyme nodes and recognition sequences associated with that enzyme
+ *  after parsing the information it creates SequenceMap objects and places
+ *  them into a AVL Tree.
  */ 
 
 // Main file for Part2(a) of Homework 2.
 
-#include "avl_tree.h"
 // You will have to add #include "sequence_map.h"
 #include "sequence_map.h"
 #include "avl_tree_p2a.h"
-#include "avl_tree_p2c.h"
 
 #include <fstream>
 #include <sstream>
@@ -27,7 +28,7 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   // You can use public functions of TreeType. For example:
   // a_tree.insert(10);
   // a_tree.printTree();
-  std::ifstream infile(db_filename);
+  std::ifstream infile{db_filename};
   
   if (infile.fail()) {
     std::cerr << "Can not open file\n";
@@ -65,14 +66,13 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
         
         recognition_sequences.clear(); // clears vector to use for next enzyme
         
-        db_line_stream >> a_reco_seq;
-        continue;
+        db_line_stream >> a_reco_seq; // gets rid of the last "/"
+        continue; // goes to next line
       }
       // pushes back each sequence read into a string vector for recognition sequences
       recognition_sequences.push_back(a_reco_seq);
     }
   }
-  
   infile.close();
   
   string input;
@@ -100,8 +100,6 @@ main(int argc, char **argv) {
   // Note that you will replace AvlTree<int> with AvlTree<SequenceMap>
   AvlTree<SequenceMap> a_tree;
   QueryTree(db_filename, a_tree);
-  
-
   
   return 0;
 }

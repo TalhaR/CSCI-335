@@ -2,7 +2,8 @@
  * @author Talha Rahman
  * date: 2/22/20
  * class: CSCI-335
- * Program Description: 
+ * Program Description: An AVL Tree class. Added find functions.
+ *  changed insert to merge two sequencemap object's sequences
  */
 #pragma once
 
@@ -31,7 +32,7 @@ template <typename Comparable>
 class AvlTree
 {
   public:
-    AvlTree( ) : root{ nullptr }, recursive_calls{0}
+    AvlTree( ) : root{ nullptr }
       { }
     
     AvlTree( const AvlTree & rhs ) : root{ nullptr }
@@ -96,7 +97,6 @@ class AvlTree
      */
     bool contains( const Comparable & x ) 
     {
-        recursive_calls = 0;
         return contains( x, root );
     }
 
@@ -149,7 +149,6 @@ class AvlTree
      */
     void remove( const Comparable & x )
     {
-        recursive_calls = 0;
         remove( x, root );
     }
     
@@ -184,14 +183,6 @@ class AvlTree
         return getInternalPathLengthHelper(root);
     }
     
-    /**
-     * @return the number of recursive calls
-     */
-    size_t getRecursiveCalls() const {
-        return recursive_calls;
-    }
-    
-
   private:
     struct AvlNode
     {
@@ -208,9 +199,6 @@ class AvlTree
     };
 
     AvlNode *root;
-    
-    // keeps track of number of recursive calls in functions
-    size_t recursive_calls;
     
     /**
      * @param c - Object of Sequence map
@@ -304,24 +292,17 @@ class AvlTree
      */
     void remove( const Comparable & x, AvlNode * & t )
     {
-        recursive_calls++;
-        
         if( t == nullptr ) 
             return;   // Item not found; do nothing
             
-        if( x < t->element ) {
+        if( x < t->element )
             remove( x, t->left );
-            return;
-        }
-        else if( t->element < x ) {
+        else if( t->element < x )
             remove( x, t->right );
-            return;
-        }
         else if( t->left != nullptr && t->right != nullptr ) // Two children
         {
             t->element = findMin( t->right )->element;
             remove( t->element, t->right );
-            return;
         }
         else
         {
@@ -388,8 +369,6 @@ class AvlTree
      */
     bool contains( const Comparable & x, AvlNode *t )
     {
-        recursive_calls++;
-        
         if( t == nullptr )
             return false;
         else if( x < t->element )
@@ -503,21 +482,8 @@ class AvlTree
      */
     void doubleWithLeftChild( AvlNode * & k3 )
     {
-        // rotateWithRightChild( k3->left );
-        AvlNode *k2 = k3->left->right;
-        k3->left->right = k2->left;
-        k2->left = k3->left;
-        k3->left->height = max( height( k3->left->left ), height( k3->left->right ) ) + 1;
-        k2->height = max( height( k2->right ), k3->left->height ) + 1;
-        k3->left = k2;
-        
-        // rotateWithLeftChild( k3 );
-        AvlNode *k1 = k3->left;
-        k3->left = k1->right;
-        k1->right = k3;
-        k3->height = max( height( k3->left ), height( k3->right ) ) + 1;
-        k1->height = max( height( k1->left ), k3->height ) + 1;
-        k3 = k1;
+        rotateWithRightChild( k3->left );
+        rotateWithLeftChild( k3 );
     }
 
     /**
@@ -528,19 +494,7 @@ class AvlTree
      */
     void doubleWithRightChild( AvlNode * & k1 )
     {
-        // rotateWithLeftChild( k1->right );
-        AvlNode *k3 = k1->right->left;
-        k1->right->left = k3->right;
-        k3->right = k1->right;
-        k1->right->height = max( height( k1->right->left ), height( k1->right->right ) ) + 1;
-        k3->height = max( height( k3->left ), k1->right->height ) + 1;
-        k1->right = k3;
-        // rotateWithRightChild( k1 );
-        AvlNode *k2 = k1->right;
-        k1->right = k2->left;
-        k2->left = k1;
-        k1->height = max( height( k1->left ), height( k1->right ) ) + 1;
-        k2->height = max( height( k2->right ), k1->height ) + 1;
-        k1 = k2;
+        rotateWithLeftChild( k1->right );
+        rotateWithRightChild( k1 );
     }
 };

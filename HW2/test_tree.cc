@@ -1,7 +1,11 @@
-// <Your name>
+/**
+ * @author Talha Rahman
+ * date: 2/22/20
+ * class: CSCI-335
+ * Program Description: 
+ */
 // Main file for Part2(b) of Homework 2.
 
-#include "avl_tree.h"
 // You will have to add #include "sequence_map.h"
 #include "sequence_map.h"
 #include "avl_tree_p2b.h"
@@ -60,7 +64,7 @@ void TestTree(const string &db_filename, const string &seq_filename, TreeType &a
         
         recognition_sequences.clear(); // clears vector to use for next enzyme
         
-        db_line_stream >> a_reco_seq;
+        db_line_stream >> a_reco_seq; // gets rid of the last "/"
         continue;
       }
       // pushes back each sequence read into a string vector for recognition sequences
@@ -117,14 +121,10 @@ void TestTree(const string &db_filename, const string &seq_filename, TreeType &a
     // }
     getline(seq_file2, input_sequence); // skips every other line
   }
-  
   seq_file2.close();
   
-  
-  
   cout << "5a: " << total_nodes - a_tree.getNumberOfNodes() << "\n";
-  
-  cout << "5b: " << (float)--recursive_remove_calls / ++remove_calls << "\n";
+  cout << "5b: " << (float)recursive_remove_calls / remove_calls << "\n";
   
   total_nodes = a_tree.getNumberOfNodes();
   

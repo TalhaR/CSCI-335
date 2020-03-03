@@ -26,7 +26,7 @@ template <typename Comparable>
 class AvlTree
 {
   public:
-    AvlTree( ) : root{ nullptr }, recursive_calls{0}
+    AvlTree( ) : root{ nullptr }
       { }
     
     AvlTree( const AvlTree & rhs ) : root{ nullptr }
@@ -91,7 +91,6 @@ class AvlTree
      */
     bool contains( const Comparable & x ) 
     {
-        recursive_calls = 0;
         return contains( x, root );
     }
 

@@ -69,5 +69,8 @@ Homework Question 2-2b:
 Homework Question 2-2c:
     File: test_tree_mod.cc, avl_tree_p2c.h
     
-    I 
+    I completed all parts.
+    The single rotations were fairly straightforward but the 
+    double rotations were quite confusing. Once I drew out pictures 
+    then it made more sense.
 
