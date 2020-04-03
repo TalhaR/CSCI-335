@@ -1,9 +1,14 @@
 /**
- *
- * 
+ * @author Talha Rahman
+ *  Summary: added on to TestFunctionForHashTable to print 
+ *           out releveant information about the hash_table(s)
+ *           and to perform searches of the hash table for certain 
+ *           words from a given file "query_words.txt"
  */
 
 #include "quadratic_probing.h"
+#include "linear_probing.h"
+#include "double_hashing.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -51,16 +56,23 @@ int testFunctionWrapper(int argument_count, char **argument_list) {
   const string words_filename(argument_list[1]);
   const string query_filename(argument_list[2]);
   const string param_flag(argument_list[3]);
+  
+  size_t rvalue = 83;
+  
+  if (argument_count == 5) {
+    rvalue = atoi(argument_list[4]);
+  }
 
   if (param_flag == "linear") {
-    // HashTableLinear<string> linear_probing_table;
-    // TestFunctionForHashTable(linear_probing_table, words_filename, query_filename);    
+    HashTableLinear<string> linear_probing_table;
+    TestFunctionForHashTable(linear_probing_table, words_filename, query_filename);    
   } else if (param_flag == "quadratic") {
     HashTable<string> quadratic_probing_table;
     TestFunctionForHashTable(quadratic_probing_table, words_filename, query_filename);    
   } else if (param_flag == "double") {
-    // HashTableDouble<string> double_probing_table;
-    // TestFunctionForHashTable(double_probing_table, words_filename, query_filename);    
+    cout << "r_value: " << rvalue << "\n";
+    HashTableDouble<string> double_probing_table{101, rvalue};
+    TestFunctionForHashTable(double_probing_table, words_filename, query_filename);    
   } else {
     cout << "Unknown tree type " << param_flag << " (User should provide linear, quadratic, or double)" << endl;
   }
@@ -72,8 +84,7 @@ int testFunctionWrapper(int argument_count, char **argument_list) {
 // WE WILL DIRECTLY CALL testFunctionWrapper. ALL FUNCTIONALITY SHOULD BE THERE.
 // This main is only here for your own testing purposes.
 int main(int argc, char **argv) {
-
-  if (argc != 4) {
+  if (argc != 4 && argc != 5) {
     cout << "Usage: " << argv[0] << " <wordsfilename> <queryfilename> <flag>" << endl;
     return 0;
   }

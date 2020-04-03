@@ -1,6 +1,8 @@
 // YOUR NAME.
 
 #include "quadratic_probing.h"
+#include "linear_probing.h"
+#include "double_hashing.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,6 +15,13 @@ int testSpellingWrapper(int argument_count, char** argument_list) {
   
   cout << "Input document filename is " << document_filename << endl;
   cout << "Input dictionary filename is " << dictionary_filename << endl;
+
+  fstream docFile{document_filename}, dicFile{dictionary_filename};
+  
+  if (docFile.fail() || dicFile.fail()) {
+    std::cerr << "Can not open files\n";
+    exit(1);
+  }
 
   // Call functions implementing the assignment requirements.
 
