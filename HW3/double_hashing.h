@@ -1,3 +1,12 @@
+/**
+ * @author Talha Rahman
+ *  Summary: This is nearly identical to quadratic_probing.h
+ *           The only difference being that I added a second 
+ *           Hashing method to have double hashing. For my 
+ *           R-value I decided to default ot 83 because that is 
+ *           a good prime number that is less than the size of 
+ *           array. 
+ */
 #pragma once
 
 #include <vector>

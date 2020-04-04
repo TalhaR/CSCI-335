@@ -4,7 +4,6 @@
  *           The only difference being that I modified the 
  *           FindPos() function to do linear probing instead of 
  *           quadratic probing.
- * 
  */
 #pragma once
 

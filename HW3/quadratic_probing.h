@@ -34,7 +34,6 @@ int NextPrime(size_t n) {
 
 }  // namespace
 
-
 // Quadratic probing implementation.
 template <typename HashedObj>
 class HashTable {

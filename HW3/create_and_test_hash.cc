@@ -5,7 +5,6 @@
  *           and to perform searches of the hash table for certain 
  *           words from a given file "query_words.txt"
  */
-
 #include "quadratic_probing.h"
 #include "linear_probing.h"
 #include "double_hashing.h"
@@ -13,7 +12,6 @@
 #include <fstream>
 #include <string>
 using namespace std;
-
 
 template <typename HashTableType>
 void TestFunctionForHashTable(HashTableType &hash_table, const string &words_filename, const string &query_filename) {
@@ -48,7 +46,6 @@ void TestFunctionForHashTable(HashTableType &hash_table, const string &words_fil
       cout << "Not_";
     } 
     cout << "Found " << hash_table.getCollisions() + 1 << "\n";
-    
   }
 }
 
