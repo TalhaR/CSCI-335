@@ -207,9 +207,17 @@ const Comparable & median3( vector<Comparable> & a, int left, int right, Compara
 }
 
 
+// used to represent different versions of Quicksort
+enum Pivot {MEDIAN, CENTER, FIRST}; 
 
-enum Pivot {MEDIAN, CENTER, FIRST};
-
+/**
+ * @param a Vector containing elements to be sorted
+ * @param left left index of vector
+ * @param right right index of vector
+ * @param less_than indicates if sorting in ascending or descending order
+ * @param piv either MEDIAN, CENTER, FIRST
+ * @return a pivot inside Vector a based on the parameter passed in for Pivot piv
+ */
 template <typename Comparable, typename Comparator>
 const Comparable& pickPivot(vector<Comparable> & a, int left, int right, Comparator less_than, Pivot piv) {
     switch (piv) {
@@ -218,7 +226,7 @@ const Comparable& pickPivot(vector<Comparable> & a, int left, int right, Compara
             
         case CENTER: 
             std::swap(a[(left + right) / 2], a[right - 1]); 
-            return a[right - 1];
+            return a[right];
             
         case FIRST:
             std::swap(a[left], a[right - 1]);
@@ -239,11 +247,11 @@ const Comparable& pickPivot(vector<Comparable> & a, int left, int right, Compara
 template <typename Comparable, typename Comparator>
 void quicksort( vector<Comparable> & a, int left, int right, Comparator Less_than, Pivot piv)
 {
-    if( left + 10 <= right )
+    if( left + 10 <= right && piv == MEDIAN)
     {
         const Comparable & pivot = pickPivot(a, left, right, Less_than, piv);
 
-            // Begin partitioning
+        // Begin partitioning
         int i = left, j = right - 1;
         for( ; ; )
         {
@@ -258,7 +266,27 @@ void quicksort( vector<Comparable> & a, int left, int right, Comparator Less_tha
         std::swap( a[ i ], a[ right - 1 ] );  // Restore pivot
 
         quicksort( a, left, i - 1, Less_than, piv);     // Sort small elements
-        quicksort( a, i + 1, right, Less_than, piv );    // Sort large elements
+        quicksort( a, i + 1, right, Less_than, piv);    // Sort large elements
+    } 
+    else if (left + 10 < right) { // this loop does not execute when left + 10 == right
+        const Comparable & pivot = pickPivot(a, left, right, Less_than, piv);
+
+        // Begin partitioning
+        int i = left, j = right - 1;
+        for( ; ; )
+        {
+            while( Less_than(a[ ++i ], pivot) ) { }
+            while( Less_than(pivot, a[ --j ]) ) { }
+            
+            if( i < j )
+                std::swap( a[ i ], a[ j ] );
+            else
+                break;
+        }
+        std::swap( a[ i ], a[ right - 1 ] );  // Restore pivot
+
+        quicksort( a, left, i - 1, Less_than, piv);     // Sort small elements
+        quicksort( a, i + 1, right, Less_than, piv);    // Sort large elements
     }
     else  // Do an insertion sort on the subarray
         insertionSort( a, left, right, Less_than);

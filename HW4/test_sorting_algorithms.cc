@@ -88,55 +88,55 @@ void TestTiming(vector<Comparable>& vec, Comparator less_than) {
   vector<int> vec4{vec};      // creates a copy of vec for QuickSort2
   vector<int> vec5{vec};      // creates a copy of vec for QuickSort3
   
-  // cout << "Heapsort\n\n";
+  cout << "Heapsort\n\n";
   auto start = chrono::high_resolution_clock::now();
-  // HeapSort(vec, less_than);
+  HeapSort(vec, less_than);
   auto finish = chrono::high_resolution_clock::now();
   
-  // cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  // cout << "Verified: " << VerifyOrder(vec, less_than) << "\n\n";
+  cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
+  cout << "Verified: " << VerifyOrder(vec, less_than) << "\n\n";
   
-  // cout << "MergeSort\n\n";
-  // start = chrono::high_resolution_clock::now();
-  // MergeSort(vec2, less_than);
-  // finish = chrono::high_resolution_clock::now();
-  
-  // cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  // cout << "Verified: " << VerifyOrder(vec2, less_than) << "\n\n";
-  
-  // cout << "QuickSort\n\n";
-  // start = chrono::high_resolution_clock::now();
-  // QuickSort(vec3, less_than);
-  // finish = chrono::high_resolution_clock::now();
-  
-  // cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  // cout << "Verified: " << VerifyOrder(vec3, less_than) << "\n\n";
-  
-  
-  // cout << "Testing Quicksort Pivot Implementations\n\n";
-  
-  // cout << "Median of Three\n\n";
-  
-  // // not testing again because the QuickSort method called above
-  // // uses the Median of Three implementation so I will just copy it over
-  // cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  // cout << "Verified: " << VerifyOrder(vec3, less_than) << "\n\n";
-  
-  cout << "Middle\n\n";
+  cout << "MergeSort\n\n";
   start = chrono::high_resolution_clock::now();
-  QuickSort2(vec, less_than);
+  MergeSort(vec2, less_than);
   finish = chrono::high_resolution_clock::now();
   
   cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  cout << "Verified: " << VerifyOrder(vec, less_than) << "\n\n";  
+  cout << "Verified: " << VerifyOrder(vec2, less_than) << "\n\n";
   
-  // cout << "First\n\n";
-  // start = chrono::high_resolution_clock::now();
-  // QuickSort3(vec5, less_than);
-  // finish = chrono::high_resolution_clock::now();
+  cout << "QuickSort\n\n";
+  start = chrono::high_resolution_clock::now();
+  QuickSort(vec3, less_than);
+  finish = chrono::high_resolution_clock::now();
   
-  // cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
-  // cout << "Verified: " << VerifyOrder(vec5, less_than) << "\n\n";
+  cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
+  cout << "Verified: " << VerifyOrder(vec3, less_than) << "\n\n";
+  
+  
+  cout << "Testing Quicksort Pivot Implementations\n\n";
+  
+  cout << "Median of Three\n\n";
+  
+  // not testing again because the QuickSort method called above
+  // uses the Median of Three implementation so I will just copy it over
+  cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
+  cout << "Verified: " << VerifyOrder(vec3, less_than) << "\n\n";
+  
+  cout << "Middle\n\n";
+  start = chrono::high_resolution_clock::now();
+  QuickSort2(vec4, less_than);
+  finish = chrono::high_resolution_clock::now();
+  
+  cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
+  cout << "Verified: " << VerifyOrder(vec4, less_than) << "\n\n";  
+  
+  cout << "First\n\n";
+  start = chrono::high_resolution_clock::now();
+  QuickSort3(vec5, less_than);
+  finish = chrono::high_resolution_clock::now();
+  
+  cout << "Runtime: " << ComputeDuration(start, finish) << " ns\n";
+  cout << "Verified: " << VerifyOrder(vec5, less_than) << "\n\n";
 }
 
 // Wrapper function to test different sorting algorithms
@@ -173,23 +173,12 @@ void sortTestingWrapper(int argc, char **argv) {
     }
   }
   
-  for(auto& x : input_vector) {
-    cout << x << " ";
-  }
-  cout << "\n";  
-  
   // Calling other function to test timing of various sorting methods
   if (comparison_type == "less") {
     TestTiming(input_vector, less<int>{});
   } else {
     TestTiming(input_vector, greater<int>{});
   }
-  
-  for(auto& x : input_vector) {
-    cout << x << " ";
-  }
-  cout << "\n";  
-  
 }
 
 int main(int argc, char **argv) {
